@@ -1,5 +1,6 @@
-import SimpleApp from './App';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './router';
 
-export default SimpleApp;
-
+ReactDOM.render(<App/>, document.getElementById('root'));
 

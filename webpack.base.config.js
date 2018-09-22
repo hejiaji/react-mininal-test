@@ -1,12 +1,9 @@
-var path = require('path');
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
 	entry: './src/index.js',
-	output: {
-		path: path.resolve(__dirname, 'build'),
-		filename: 'index.js',
-		libraryTarget: 'umd'
-	},
 	module: {
 		rules: [
 			{
@@ -26,7 +23,14 @@ module.exports = {
 			}
 		]
 	},
-	externals: {
-		'react': 'commonjs react' // this line is just to use the React dependency of our parent-testing-project instead of using our own React.
-	}
+	plugins: [
+		new webpack.EnvironmentPlugin([
+			'NODE_ENV',
+		]),
+		new HtmlWebpackPlugin({
+			template: __dirname + '/public/index.html',
+			filename: 'index.html',
+			inject: 'body'
+		})
+	]
 };
