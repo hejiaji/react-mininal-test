@@ -10,5 +10,6 @@ module.exports = merge(baseConfig, {
 	devServer: {
 		contentBase: path.join(__dirname, '/public'),
 		port: '3008',
+		historyApiFallback: true,
 	}
 });
