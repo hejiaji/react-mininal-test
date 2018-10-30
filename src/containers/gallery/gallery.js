@@ -1,4 +1,6 @@
 import React from 'react';
+import _ from 'lodash';
+
 import gallery from "./gallery.css";
 
 import StrangeThing from '../../assets/strange.png';
@@ -23,33 +25,29 @@ class Gallery extends React.Component {
 	}
 
 	get currentWidth () {
-		console.log(this.container.current.offsetWidth);
 		return parseInt(this.container.current.offsetWidth / 16 - 2 , 10);
 	}
 
 	getVisibleItemsCount () {
-		console.log(this.currentWidth);
 		return Math.round(this.currentWidth / 7.5);
 	}
 
-	updateDimensions = () => {
+	updateVisibleItems = _.debounce(() => {
 		this.setState({
 			visibleItems: images.slice(0, this.getVisibleItemsCount()),
 		})
-	};
+	}, 200);
 
 	componentDidMount() {
-		window.addEventListener("resize", this.updateDimensions);
-		this.updateDimensions();
+		window.addEventListener("resize", this.updateVisibleItems);
+		this.updateVisibleItems();
 	}
 
 	componentWillUnmount() {
-		window.removeEventListener("resize", this.updateDimensions);
+		window.removeEventListener("resize", this.updateVisibleItems);
 	}
 
   render() {
-		console.log('render');
-		// const visibleItems = images.slice(0, this.getVisibleItemsCount() - 1);
 	  const invisibleCount = images.length - this.state.visibleItems.length;
     return (
       <div ref={this.container} className={gallery.container}>
@@ -61,7 +59,7 @@ class Gallery extends React.Component {
 			      	<a className={gallery.imageContainer}>
 					      {
 					      	shouldShowShadow && (
-							      <div className={gallery.invisibleCount}>{invisibleCount}</div>
+							      <div className={gallery.invisibleCount}>{invisibleCount}+</div>
 						      )
 					      }
 				        <img key={image.id} src={StrangeThing} alt="strange"/>
